@@ -1,0 +1,1032 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>1885 Car Service Centre - Warranty Calculator</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-deep: #0a0a0a;
+            --gold-primary: #D4AF37;
+            --gold-light: #F4E4BC;
+            --gold-dark: #8B6914;
+            --red-primary: #E31E24;
+            --red-dark: #B91C1C;
+            --green-primary: #25D366;
+            --green-dark: #128C7E;
+            --text-primary: #ffffff;
+            --text-secondary: #cccccc;
+            --border-gold: rgba(212, 175, 55, 0.2);
+            --surface-glass: rgba(255, 255, 255, 0.03);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-deep);
+            color: var(--text-primary);
+            min-height: 100vh;
+            position: relative;
+            line-height: 1.6;
+        }
+
+        .bg-pattern {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-image: 
+                radial-gradient(circle at 20% 50%, rgba(212, 175, 55, 0.05) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(212, 175, 55, 0.05) 0%, transparent 40%);
+            z-index: -1; pointer-events: none;
+        }
+
+        .bg-texture {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            opacity: 0.03;
+            background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23D4AF37' fill-opacity='1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            z-index: -1; pointer-events: none;
+        }
+
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+
+        header {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 20px 0; margin-bottom: 40px;
+            border-bottom: 2px solid transparent;
+            border-image: linear-gradient(90deg, transparent, var(--gold-primary), transparent) 1;
+        }
+
+        .brand { display: flex; align-items: center; gap: 20px; }
+        .logo { width: 80px; height: 80px; object-fit: contain; }
+        .logo-fallback {
+            width: 80px; height: 80px; border-radius: 50%;
+            background: linear-gradient(135deg, var(--gold-primary), var(--gold-dark));
+            display: flex; align-items: center; justify-content: center;
+            font-weight: 700; color: #000; font-size: 1.2rem;
+            border: 3px solid var(--gold-primary);
+        }
+        .brand-name { font-size: 1.5rem; font-weight: 700; }
+
+        .language-toggle {
+            display: flex; gap: 10px;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 5px; border-radius: 30px;
+            border: 1px solid var(--border-gold);
+        }
+
+        .lang-btn {
+            padding: 8px 20px; border: none; background: transparent;
+            color: var(--text-secondary); cursor: pointer;
+            border-radius: 20px; transition: all 0.3s ease;
+            font-family: inherit; font-weight: 600;
+        }
+
+        .lang-btn.active {
+            background: var(--gold-primary);
+            color: #000;
+        }
+
+        h1, h2, h3 {
+            text-transform: uppercase; letter-spacing: 2px; font-weight: 700;
+        }
+
+        .page-title {
+            text-align: center;
+            font-size: 2rem;
+            margin-bottom: 30px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+        }
+
+        .gold-gradient-text {
+            background: linear-gradient(135deg, var(--gold-primary) 0%, var(--gold-light) 50%, var(--gold-primary) 100%);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+        }
+
+        .glass-card {
+            background: var(--surface-glass); backdrop-filter: blur(20px);
+            border: 1px solid var(--border-gold); border-radius: 20px;
+            padding: 30px; margin-bottom: 30px;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+        }
+
+        .form-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px; margin-bottom: 30px;
+        }
+
+        .form-group { display: flex; flex-direction: column; gap: 8px; }
+        
+        label {
+            font-size: 0.85rem; color: var(--gold-light);
+            font-weight: 600; text-transform: uppercase; letter-spacing: 1px;
+        }
+
+        input, select {
+            padding: 15px 20px; background: rgba(0, 0, 0, 0.5);
+            border: 2px solid var(--border-gold); border-radius: 10px;
+            color: var(--text-primary); font-family: inherit; font-size: 1rem;
+            transition: all 0.3s ease; outline: none;
+        }
+
+        input:focus, select:focus {
+            border-color: var(--gold-primary);
+            box-shadow: 0 0 10px rgba(212, 175, 55, 0.3);
+        }
+
+        input:disabled, select:disabled {
+            opacity: 0.5; cursor: not-allowed;
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+
+        select { 
+            appearance: none; 
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%23D4AF37' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+            background-repeat: no-repeat; background-position: right 15px center;
+            padding-right: 50px;
+        }
+
+        .error-message {
+            color: #ff4444; font-size: 0.85rem; margin-top: 5px;
+            display: none;
+        }
+
+        .error-message.show { display: block; }
+
+        input.error, select.error {
+            border-color: #ff4444;
+            box-shadow: 0 0 10px rgba(255, 68, 68, 0.3);
+        }
+
+        .btn-primary {
+            width: 100%; padding: 18px;
+            background: linear-gradient(90deg, var(--red-primary) 0%, var(--red-dark) 100%);
+            color: white; border: none; border-radius: 10px;
+            font-size: 1.1rem; font-weight: 700; text-transform: uppercase;
+            letter-spacing: 2px; cursor: pointer; position: relative; overflow: hidden;
+            transition: transform 0.3s ease; font-family: inherit;
+        }
+
+        .btn-primary:hover:not(:disabled) { transform: translateY(-2px); }
+        .btn-primary:disabled {
+            opacity: 0.5; cursor: not-allowed;
+        }
+
+        .btn-primary::after {
+            content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+            transition: 0.6s;
+        }
+        .btn-primary:hover:not(:disabled)::after { left: 100%; }
+
+        .btn-whatsapp {
+            display: inline-flex; align-items: center; gap: 10px;
+            padding: 15px 30px;
+            background: linear-gradient(90deg, var(--green-primary) 0%, var(--green-dark) 100%);
+            color: white; text-decoration: none; border-radius: 10px;
+            font-weight: 600; margin-top: 20px; transition: transform 0.3s ease;
+            border: none; cursor: pointer; font-size: 1rem;
+        }
+
+        .btn-whatsapp:hover:not(:disabled) { transform: translateY(-2px); }
+        .btn-whatsapp:disabled {
+            opacity: 0.5; cursor: not-allowed; background: #666;
+        }
+
+        .results-section { display: none; animation: fadeInUp 0.6s ease; }
+        
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .ineligible-banner {
+            background: rgba(255, 0, 0, 0.1); border: 2px solid #ff4444;
+            color: #ff6666; padding: 30px; border-radius: 10px;
+            text-align: center; margin-bottom: 30px;
+        }
+
+        .ineligible-banner h2 {
+            color: #ff4444; margin-bottom: 10px;
+        }
+
+        .package-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px; margin: 30px 0;
+        }
+
+        .package-card {
+            background: rgba(255, 255, 255, 0.02);
+            border: 2px solid var(--border-gold); border-radius: 15px;
+            padding: 25px; cursor: pointer; transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .package-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.1);
+            border-color: var(--gold-primary);
+        }
+
+        .package-card.selected {
+            border-color: var(--gold-primary);
+            background: rgba(212, 175, 55, 0.05);
+            box-shadow: 0 0 30px rgba(212, 175, 55, 0.2);
+        }
+
+        .package-card.selected::after {
+            content: '✓'; position: absolute; top: 10px; right: 10px;
+            width: 30px; height: 30px; background: var(--gold-primary);
+            color: #000; border-radius: 50%; display: flex;
+            align-items: center; justify-content: center;
+            font-weight: 700;
+        }
+
+        .package-term {
+            font-size: 1.3rem; font-weight: 700; color: var(--gold-primary);
+            margin-bottom: 10px;
+        }
+
+        .package-km {
+            color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 15px;
+        }
+
+        .package-price {
+            font-size: 2rem; font-weight: 700; color: var(--text-primary);
+            margin-bottom: 5px;
+        }
+
+        .package-cap {
+            font-size: 0.85rem; color: var(--text-secondary);
+            margin-bottom: 15px;
+        }
+
+        .package-notes {
+            font-size: 0.8rem; color: var(--gold-light);
+            border-top: 1px solid var(--border-gold);
+            padding-top: 10px; margin-top: 10px;
+        }
+
+        .inspection-notice {
+            background: rgba(212, 175, 55, 0.1);
+            border-left: 4px solid var(--gold-primary);
+            padding: 20px; margin: 30px 0;
+            border-radius: 0 10px 10px 0;
+            color: var(--text-secondary);
+        }
+
+        .inspection-notice strong {
+            color: var(--gold-primary); display: block; margin-bottom: 10px;
+        }
+
+        .final-price-display {
+            text-align: center; margin: 30px 0;
+            padding: 30px; background: rgba(0, 0, 0, 0.3);
+            border-radius: 15px; border: 1px solid var(--border-gold);
+        }
+
+        .final-price-amount {
+            font-size: 3rem; font-weight: 700; color: var(--gold-primary);
+            margin: 10px 0;
+        }
+
+        .hidden { display: none !important; }
+
+        .text-input-other {
+            margin-top: 10px;
+        }
+
+        /* RTL Support */
+        [dir="rtl"] {
+            font-family: 'Cairo', sans-serif;
+        }
+
+        [dir="rtl"] header {
+            flex-direction: row-reverse;
+        }
+
+        [dir="rtl"] .brand {
+            flex-direction: row-reverse;
+        }
+
+        [dir="rtl"] select {
+            background-position: left 15px center;
+            padding-right: 20px;
+            padding-left: 50px;
+        }
+
+        [dir="rtl"] .package-card.selected::after {
+            right: auto;
+            left: 10px;
+        }
+
+        [dir="rtl"] .inspection-notice {
+            border-left: none;
+            border-right: 4px solid var(--gold-primary);
+            border-radius: 10px 0 0 10px;
+        }
+
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                gap: 20px;
+                text-align: center;
+            }
+            
+            [dir="rtl"] header {
+                flex-direction: column;
+            }
+            
+            .form-grid { grid-template-columns: 1fr; }
+            .package-grid { grid-template-columns: 1fr; }
+            
+            .page-title {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-pattern"></div>
+    <div class="bg-texture"></div>
+    
+    <div class="container">
+        <header>
+            <div class="brand">
+                <img src="LOGO.png" alt="1885" class="logo" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                <div class="logo-fallback" style="display: none;">1885</div>
+                <div class="brand-name gold-gradient-text">1885 CAR SERVICE CENTRE</div>
+            </div>
+            <div class="language-toggle">
+                <button class="lang-btn active" onclick="setLanguage('en', this)">English</button>
+                <button class="lang-btn" onclick="setLanguage('ar', this)">العربية</button>
+            </div>
+        </header>
+
+        <h1 class="page-title gold-gradient-text" data-en="Warranty Calculator" data-ar="حاسبة الضمان">Warranty Calculator</h1>
+
+        <div class="glass-card">
+            <h2 class="gold-gradient-text" style="margin-bottom: 25px; font-size: 1.3rem;" data-en="Vehicle Details" data-ar="تفاصيل المركبة">Vehicle Details</h2>
+            <form id="warrantyForm" onsubmit="return false;">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label data-en="Make *" data-ar="الماركة *">Make *</label>
+                        <select id="make" required onchange="handleMakeChange()">
+                            <option value="" data-en="Select Make" data-ar="اختر الماركة">Select Make</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label data-en="Model *" data-ar="الطراز *">Model *</label>
+                        <select id="model" required disabled onchange="handleModelChange()">
+                            <option value="" data-en="Select Model" data-ar="اختر الطراز">Select Model</option>
+                        </select>
+                        <input type="text" id="modelOther" class="text-input-other hidden" placeholder="Enter model manually">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label data-en="Trim / Badge *" data-ar="الفئة / الشارة *">Trim / Badge *</label>
+                        <select id="trim" required disabled onchange="handleTrimChange()">
+                            <option value="Standard" data-en="Standard" data-ar="قياسي">Standard</option>
+                        </select>
+                        <input type="text" id="trimOther" class="text-input-other hidden" placeholder="Enter trim manually">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label data-en="Model Year *" data-ar="سنة الصنع *">Model Year *</label>
+                        <select id="year" required onchange="validateYear()">
+                            <option value="" data-en="Select Year" data-ar="اختر السنة">Select Year</option>
+                        </select>
+                        <div id="yearError" class="error-message" data-en="Year too old (min 2017)" data-ar="السنة قديمة جداً (الحد الأدنى 2017)">Year too old (min 2017)</div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label data-en="Odometer (km) *" data-ar="عداد المسافة (كم) *">Odometer (km) *</label>
+                        <input type="number" id="odometer" min="0" max="120000" required placeholder="e.g., 45000" oninput="validateOdometer()">
+                        <div id="odometerError" class="error-message" data-en="Mileage too high (max 120,000 km)" data-ar="المسافة مرتفعة جداً (الحد الأقصى 120,000 كم)">Mileage too high (max 120,000 km)</div>
+                    </div>
+                </div>
+                
+                <button type="button" id="checkBtn" class="btn-primary" onclick="checkEligibility()" data-en="Check Eligibility" data-ar="التحقق من الأهلية">Check Eligibility</button>
+            </form>
+        </div>
+
+        <div id="resultsSection" class="results-section">
+            <div id="ineligibleMessage" class="ineligible-banner hidden">
+                <h2 data-en="Not Eligible" data-ar="غير مؤهل">Not Eligible</h2>
+                <p id="ineligibleReason"></p>
+            </div>
+
+            <div id="eligibleContent" class="hidden">
+                <div class="inspection-notice">
+                    <strong data-en="⚠️ Mandatory Pre-Warranty Inspection" data-ar="⚠️ فحص ما قبل الضمان إلزامي">⚠️ Mandatory Pre-Warranty Inspection</strong>
+                    <span data-en="All vehicles must pass a pre-warranty inspection before any warranty can be activated. If any issues are found, they must be repaired first. Warranty can only be issued/activated after the vehicle passes inspection. If the customer refuses repairs, warranty will not be activated." 
+                          data-ar="يجب أن تجتاز جميع المركبات فحص ما قبل الضمان قبل تفعيل أي ضمان. إذا تم العثور على أي مشاكل، يجب إصلاحها أولاً. يمكن إصدار/تفعيل الضمان فقط بعد اجتياز المركبة للفحص. إذا رفض العميل الإصلاحات، لن يتم تفعيل الضمان.">
+                        All vehicles must pass a pre-warranty inspection before any warranty can be activated. If any issues are found, they must be repaired first. Warranty can only be issued/activated after the vehicle passes inspection. If the customer refuses repairs, warranty will not be activated.
+                    </span>
+                </div>
+
+                <h3 class="gold-gradient-text" style="margin-bottom: 20px;" data-en="Select Your Warranty Package" data-ar="اختر باقة الضمان">Select Your Warranty Package</h3>
+                
+                <div id="packageContainer" class="package-grid"></div>
+
+                <div id="finalSelection" class="final-price-display hidden">
+                    <div style="color: var(--text-secondary); margin-bottom: 10px;" data-en="Selected Package" data-ar="الباقة المختارة">Selected Package</div>
+                    <div id="selectedTerm" style="font-size: 1.2rem; color: var(--gold-primary); margin-bottom: 10px;"></div>
+                    <div class="final-price-amount">AED <span id="finalPrice">0</span></div>
+                    <div style="color: var(--text-secondary); font-size: 0.9rem;" data-en="VAT not included" data-ar="غير شامل ضريبة القيمة المضافة">VAT not included</div>
+                    <div id="surchargeNote" class="hidden" style="color: var(--gold-light); margin-top: 10px; font-size: 0.9rem;"></div>
+                </div>
+
+                <div style="text-align: center;">
+                    <button id="whatsappBtn" class="btn-whatsapp" disabled onclick="sendWhatsApp()">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path>
+                        </svg>
+                        <span data-en="Send Quote via WhatsApp" data-ar="إرسال العرض عبر واتساب">Send Quote via WhatsApp</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Vehicle Database
+        const vehicleDatabase = {
+            'Ford': {
+                models: ['F-150', 'Ranger', 'Explorer', 'Expedition', 'Escape', 'Edge', 'Mustang', 'Bronco', 'Transit', 'Other'],
+                performanceTrims: ['Raptor', 'Shelby', 'ST', 'RS']
+            },
+            'Toyota': {
+                models: ['Land Cruiser', 'Prado', 'Corolla', 'Camry', 'Hilux', 'Fortuner', 'RAV4', 'Highlander', 'Tundra', 'Other'],
+                performanceTrims: ['GR']
+            },
+            'BMW': {
+                models: ['1 Series', '2 Series', '3 Series', '4 Series', '5 Series', '7 Series', 'X1', 'X3', 'X5', 'X7', 'Other'],
+                performanceTrims: ['M', 'M Performance']
+            },
+            'Mercedes-Benz': {
+                models: ['A-Class', 'C-Class', 'E-Class', 'S-Class', 'GLA', 'GLC', 'GLE', 'GLS', 'G-Class', 'Other'],
+                performanceTrims: ['AMG', '63']
+            },
+            'Audi': {
+                models: ['A3', 'A4', 'A5', 'A6', 'A8', 'Q3', 'Q5', 'Q7', 'Q8', 'TT', 'Other'],
+                performanceTrims: ['S line', 'S', 'RS']
+            },
+            'Porsche': {
+                models: ['911', 'Cayenne', 'Panamera', 'Macan', 'Taycan', '718', 'Other'],
+                performanceTrims: ['Turbo', 'GTS', 'GT3']
+            },
+            'Land Rover': {
+                models: ['Range Rover', 'Range Rover Sport', 'Range Rover Velar', 'Discovery', 'Defender', 'Evoque', 'Other'],
+                performanceTrims: ['SVR']
+            },
+            'Range Rover': {
+                models: ['Range Rover', 'Range Rover Sport', 'Range Rover Velar', 'Evoque', 'Other'],
+                performanceTrims: ['SVR']
+            },
+            'Nissan': {
+                models: ['Patrol', 'Armada', 'Altima', 'Maxima', 'Sentra', 'X-Trail', 'Pathfinder', 'Navara', 'Other'],
+                performanceTrims: ['NISMO']
+            },
+            'Honda': {
+                models: ['Civic', 'Accord', 'CR-V', 'Pilot', 'Odyssey', 'Passport', 'Other'],
+                performanceTrims: ['Type R']
+            },
+            'Hyundai': {
+                models: ['Elantra', 'Sonata', 'Tucson', 'Santa Fe', 'Palisade', 'Kona', 'Other'],
+                performanceTrims: ['N']
+            },
+            'Kia': {
+                models: ['Seltos', 'Sportage', 'Sorento', 'Telluride', 'Carnival', 'K5', 'Other'],
+                performanceTrims: ['GT']
+            },
+            'Lexus': {
+                models: ['IS', 'ES', 'GS', 'LS', 'RX', 'GX', 'LX', 'NX', 'UX', 'Other'],
+                performanceTrims: ['F', 'F Sport']
+            },
+            'Jeep': {
+                models: ['Wrangler', 'Grand Cherokee', 'Cherokee', 'Compass', 'Renegade', 'Gladiator', 'Other'],
+                performanceTrims: ['SRT', 'Trackhawk']
+            },
+            'Dodge': {
+                models: ['Charger', 'Challenger', 'Durango', 'RAM 1500', 'RAM 2500', 'Other'],
+                performanceTrims: ['SRT', 'Hellcat']
+            },
+            'Chevrolet': {
+                models: ['Silverado', 'Tahoe', 'Suburban', 'Camaro', 'Corvette', 'Traverse', 'Equinox', 'Other'],
+                performanceTrims: ['Z06', 'ZL1', 'SS']
+            },
+            'Cadillac': {
+                models: ['Escalade', 'XT4', 'XT5', 'XT6', 'CT4', 'CT5', 'CT6', 'Other'],
+                performanceTrims: ['V', 'V-Series']
+            },
+            'Ferrari': {
+                models: ['488', 'F8', 'SF90', 'Roma', 'Portofino', '812', 'Other'],
+                performanceTrims: []
+            },
+            'Lamborghini': {
+                models: ['Huracan', 'Urus', 'Aventador', 'Other'],
+                performanceTrims: []
+            },
+            'Rolls-Royce': {
+                models: ['Phantom', 'Ghost', 'Cullinan', 'Wraith', 'Dawn', 'Other'],
+                performanceTrims: []
+            },
+            'Bentley': {
+                models: ['Continental', 'Flying Spur', 'Bentayga', 'Other'],
+                performanceTrims: []
+            },
+            'McLaren': {
+                models: ['720S', 'GT', 'Artura', 'Other'],
+                performanceTrims: []
+            },
+            'Volkswagen': {
+                models: ['Golf', 'Passat', 'Tiguan', 'Atlas', 'Jetta', 'Other'],
+                performanceTrims: ['R']
+            },
+            'Volvo': {
+                models: ['XC90', 'XC60', 'XC40', 'S60', 'S90', 'V60', 'Other'],
+                performanceTrims: ['Polestar']
+            },
+            'Jaguar': {
+                models: ['F-PACE', 'E-PACE', 'I-PACE', 'XE', 'XF', 'Other'],
+                performanceTrims: ['SVR']
+            },
+            'MINI': {
+                models: ['Cooper', 'Countryman', 'Clubman', 'Other'],
+                performanceTrims: ['JCW']
+            },
+            'Aston Martin': {
+                models: ['DB11', 'Vantage', 'DBS', 'DBX', 'Other'],
+                performanceTrims: []
+            },
+            'Maserati': {
+                models: ['Ghibli', 'Quattroporte', 'Levante', 'MC20', 'Other'],
+                performanceTrims: []
+            },
+            'Genesis': {
+                models: ['G70', 'G80', 'G90', 'GV70', 'GV80', 'Other'],
+                performanceTrims: []
+            },
+            'Infiniti': {
+                models: ['Q50', 'Q60', 'QX50', 'QX60', 'QX80', 'Other'],
+                performanceTrims: []
+            }
+        };
+
+        const brandCategories = {
+            EUROPEAN: ['BMW', 'Mercedes-Benz', 'Audi', 'Volkswagen', 'Porsche', 'Land Rover', 'Range Rover', 'Jaguar', 'MINI', 'Volvo', 'Aston Martin', 'Maserati'],
+            JAPANESE_AMERICAN_KOREAN: ['Toyota', 'Nissan', 'Honda', 'Lexus', 'Infiniti', 'Mazda', 'Mitsubishi', 'Subaru', 'Suzuki', 'Ford', 'Chevrolet', 'GMC', 'Cadillac', 'Chrysler', 'Jeep', 'Dodge', 'RAM', 'Lincoln', 'Hyundai', 'Kia', 'Genesis'],
+            LUXURY_SPORT: ['Ferrari', 'Lamborghini', 'Rolls-Royce', 'Bentley', 'McLaren', 'Bugatti', 'Brabus', 'Maybach']
+        };
+
+        const rateCards = {
+            EUROPEAN: {
+                perClaimCap: 25000,
+                terms: [
+                    { term: '1 year', termAr: '1 سنة', kmLimit: 'Open KM', kmLimitAr: 'مفتوح الكيلومترات', price: 13000, allowed: ['NEW', 'MEDIUM', 'HEAVY'] },
+                    { term: '2 years', termAr: '2 سنة', kmLimit: 'Open KM', kmLimitAr: 'مفتوح الكيلومترات', price: 19000, allowed: ['NEW', 'MEDIUM', 'HEAVY'] },
+                    { term: '3 years', termAr: '3 سنوات', kmLimit: '100,000 KM', kmLimitAr: '100,000 كم', price: 22000, allowed: ['NEW'] },
+                    { term: '5 years', termAr: '5 سنوات', kmLimit: '200,000 KM', kmLimitAr: '200,000 كم', price: 28000, allowed: ['NEW'] }
+                ]
+            },
+            JAPANESE_AMERICAN_KOREAN: {
+                perClaimCap: 15000,
+                terms: [
+                    { term: '1 year', termAr: '1 سنة', kmLimit: 'Open KM', kmLimitAr: 'مفتوح الكيلومترات', price: 10350, allowed: ['NEW', 'MEDIUM', 'HEAVY'] },
+                    { term: '2 years', termAr: '2 سنة', kmLimit: 'Open KM', kmLimitAr: 'مفتوح الكيلومترات', price: 15300, allowed: ['NEW', 'MEDIUM', 'HEAVY'] },
+                    { term: '3 years', termAr: '3 سنوات', kmLimit: '100,000 KM', kmLimitAr: '100,000 كم', price: 18000, allowed: ['NEW', 'MEDIUM'] },
+                    { term: '5 years', termAr: '5 سنوات', kmLimit: '200,000 KM', kmLimitAr: '200,000 كم', price: 21600, allowed: ['NEW'] }
+                ]
+            },
+            LUXURY_SPORT: {
+                perClaimCap: 25000,
+                terms: [
+                    { term: '1 year', termAr: '1 سنة', kmLimit: 'Open KM', kmLimitAr: 'مفتوح الكيلومترات', price: 23000, allowed: ['NEW', 'MEDIUM', 'HEAVY'] },
+                    { term: '2 years', termAr: '2 سنة', kmLimit: 'Open KM', kmLimitAr: 'مفتوح الكيلومترات', price: 36000, allowed: ['NEW', 'MEDIUM', 'HEAVY'] },
+                    { term: '3 years (Option A)', termAr: '3 سنوات (الخيار أ)', kmLimit: '60,000 KM', kmLimitAr: '60,000 كم', price: 36000, allowed: ['NEW', 'MEDIUM'] },
+                    { term: '3 years (Option B)', termAr: '3 سنوات (الخيار ب)', kmLimit: 'Open KM', kmLimitAr: 'مفتوح الكيلومترات', price: 44500, allowed: ['NEW', 'MEDIUM'] },
+                    { term: '5 years', termAr: '5 سنوات', kmLimit: '100,000 KM', kmLimitAr: '100,000 كم', price: 46500, allowed: ['NEW'] }
+                ]
+            }
+        };
+
+        let currentLang = 'en';
+        let currentSelection = {};
+
+        function setLanguage(lang, btn) {
+            currentLang = lang;
+            document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+            document.documentElement.lang = lang;
+            
+            document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            
+            document.querySelectorAll('[data-en]').forEach(el => {
+                if (el.tagName === 'INPUT') {
+                    if (el.id === 'modelOther' || el.id === 'trimOther') {
+                        el.placeholder = lang === 'ar' ? 'أدخل يدوياً' : 'Enter manually';
+                    } else if (el.hasAttribute('data-en-placeholder')) {
+                        el.placeholder = el.getAttribute(lang === 'ar' ? 'data-ar-placeholder' : 'data-en-placeholder');
+                    }
+                } else if (el.tagName === 'OPTION') {
+                    if (el.hasAttribute('data-ar')) {
+                        el.textContent = lang === 'ar' ? el.getAttribute('data-ar') : el.getAttribute('data-en');
+                    }
+                } else {
+                    el.textContent = el.getAttribute('data-' + lang);
+                }
+            });
+
+            // Re-render packages if visible
+            if (currentSelection.eligible === true && document.getElementById('resultsSection').style.display === 'block') {
+                calculatePackages();
+                if (currentSelection.selectedPackage) {
+                    // Restore selection visually
+                    const cards = document.querySelectorAll('.package-card');
+                    cards.forEach((card, i) => {
+                        if (i === currentSelection.selectedIndex) {
+                            card.classList.add('selected');
+                            updateFinalDisplay();
+                        }
+                    });
+                }
+            } else if (currentSelection.eligible === false) {
+                updateIneligibleMessage();
+            }
+        }
+
+        function updateIneligibleMessage() {
+            const reasons = currentSelection.reasons || [];
+            const reasonText = reasons.map(r => {
+                if (r.includes('2017')) return currentLang === 'ar' ? 'سنة الصنع يجب أن تكون 2017 أو أحدث' : r;
+                if (r.includes('120,000')) return currentLang === 'ar' ? 'المسافة يجب ألا تتجاوز 120,000 كم' : r;
+                return r;
+            }).join('. ');
+            document.getElementById('ineligibleReason').textContent = reasonText;
+        }
+
+        function populateMakes() {
+            const makeSelect = document.getElementById('make');
+            const makes = Object.keys(vehicleDatabase).sort();
+            makes.forEach(make => {
+                const option = document.createElement('option');
+                option.value = make;
+                option.textContent = make;
+                makeSelect.appendChild(option);
+            });
+        }
+
+        function populateYears() {
+            const yearSelect = document.getElementById('year');
+            for (let year = 2025; year >= 2017; year--) {
+                const option = document.createElement('option');
+                option.value = year;
+                option.textContent = year;
+                yearSelect.appendChild(option);
+            }
+        }
+
+        function handleMakeChange() {
+            const make = document.getElementById('make').value;
+            const modelSelect = document.getElementById('model');
+            const trimSelect = document.getElementById('trim');
+            
+            modelSelect.innerHTML = '';
+            trimSelect.innerHTML = '<option value="Standard" data-en="Standard" data-ar="قياسي">Standard</option>';
+            trimSelect.disabled = true;
+            document.getElementById('modelOther').classList.add('hidden');
+            document.getElementById('trimOther').classList.add('hidden');
+            
+            const defaultOption = document.createElement('option');
+            defaultOption.value = '';
+            defaultOption.textContent = currentLang === 'ar' ? 'اختر الطراز' : 'Select Model';
+            defaultOption.setAttribute('data-en', 'Select Model');
+            defaultOption.setAttribute('data-ar', 'اختر الطراز');
+            modelSelect.appendChild(defaultOption);
+            
+            if (!make) {
+                modelSelect.disabled = true;
+                return;
+            }
+            
+            const models = vehicleDatabase[make].models;
+            models.forEach(model => {
+                const option = document.createElement('option');
+                option.value = model;
+                option.textContent = model;
+                modelSelect.appendChild(option);
+            });
+            
+            modelSelect.disabled = false;
+        }
+
+        function handleModelChange() {
+            const make = document.getElementById('make').value;
+            const model = document.getElementById('model').value;
+            const trimSelect = document.getElementById('trim');
+            const modelOther = document.getElementById('modelOther');
+            
+            if (model === 'Other') {
+                modelOther.classList.remove('hidden');
+                modelOther.focus();
+            } else {
+                modelOther.classList.add('hidden');
+            }
+            
+            trimSelect.innerHTML = '';
+            
+            const standardOption = document.createElement('option');
+            standardOption.value = 'Standard';
+            standardOption.textContent = currentLang === 'ar' ? 'قياسي' : 'Standard';
+            standardOption.setAttribute('data-en', 'Standard');
+            standardOption.setAttribute('data-ar', 'قياسي');
+            trimSelect.appendChild(standardOption);
+            
+            if (!make || !model) {
+                trimSelect.disabled = true;
+                return;
+            }
+            
+            const perfTrims = vehicleDatabase[make].performanceTrims;
+            perfTrims.forEach(trim => {
+                const option = document.createElement('option');
+                option.value = trim;
+                option.textContent = trim;
+                trimSelect.appendChild(option);
+            });
+            
+            const otherOption = document.createElement('option');
+            otherOption.value = 'Other';
+            otherOption.textContent = currentLang === 'ar' ? 'أخرى (حدد)' : 'Other (specify)';
+            otherOption.setAttribute('data-en', 'Other (specify)');
+            otherOption.setAttribute('data-ar', 'أخرى (حدد)');
+            trimSelect.appendChild(otherOption);
+            
+            trimSelect.disabled = false;
+        }
+
+        function handleTrimChange() {
+            const trim = document.getElementById('trim').value;
+            const trimOther = document.getElementById('trimOther');
+            
+            if (trim === 'Other') {
+                trimOther.classList.remove('hidden');
+                trimOther.focus();
+            } else {
+                trimOther.classList.add('hidden');
+            }
+        }
+
+        function validateYear() {
+            const year = parseInt(document.getElementById('year').value);
+            const yearError = document.getElementById('yearError');
+            const yearSelect = document.getElementById('year');
+            
+            if (year && year < 2017) {
+                yearError.classList.add('show');
+                yearSelect.classList.add('error');
+                return false;
+            } else {
+                yearError.classList.remove('show');
+                yearSelect.classList.remove('error');
+                return true;
+            }
+        }
+
+        function validateOdometer() {
+            const odometer = parseInt(document.getElementById('odometer').value);
+            const odometerError = document.getElementById('odometerError');
+            const odometerInput = document.getElementById('odometer');
+            
+            if (odometer && odometer > 120000) {
+                odometerError.classList.add('show');
+                odometerInput.classList.add('error');
+                return false;
+            } else {
+                odometerError.classList.remove('show');
+                odometerInput.classList.remove('error');
+                return true;
+            }
+        }
+
+        function determineCategory(make) {
+            if (make === 'Ford') return 'JAPANESE_AMERICAN_KOREAN';
+            if (brandCategories.LUXURY_SPORT.includes(make)) return 'LUXURY_SPORT';
+            if (brandCategories.EUROPEAN.includes(make)) return 'EUROPEAN';
+            if (brandCategories.JAPANESE_AMERICAN_KOREAN.includes(make)) return 'JAPANESE_AMERICAN_KOREAN';
+            return 'JAPANESE_AMERICAN_KOREAN';
+        }
+
+        function determineUsageBand(odometer) {
+            if (odometer < 20000) return 'NEW';
+            if (odometer < 80000) return 'MEDIUM';
+            return 'HEAVY';
+        }
+
+        function checkPerformanceSurcharge(make, trim) {
+            if (!trim) return false;
+            const upperTrim = trim.toUpperCase();
+            if (make === 'BMW' && (upperTrim.includes('M') || upperTrim.includes('M PERFORMANCE'))) return true;
+            if (make === 'Mercedes-Benz' && (upperTrim.includes('AMG') || upperTrim.includes('63'))) return true;
+            if ((make === 'Land Rover' || make === 'Range Rover') && upperTrim.includes('SVR')) return true;
+            if (make === 'Porsche' && upperTrim.includes('TURBO')) return true;
+            return false;
+        }
+
+        function checkEligibility() {
+            const make = document.getElementById('make').value;
+            const model = document.getElementById('model').value;
+            const modelOther = document.getElementById('modelOther').value;
+            const trim = document.getElementById('trim').value;
+            const trimOther = document.getElementById('trimOther').value;
+            const year = parseInt(document.getElementById('year').value);
+            const odometer = parseInt(document.getElementById('odometer').value);
+            
+            if (!make || !model || !year || !odometer) {
+                alert(currentLang === 'ar' ? 'الرجاء ملء جميع الحقول المطلوبة' : 'Please fill in all required fields');
+                return;
+            }
+            
+            let eligible = true;
+            let reasons = [];
+            
+            if (year < 2017) {
+                eligible = false;
+                reasons.push(currentLang === 'ar' ? 'سنة الصنع يجب أن تكون 2017 أو أحدث' : 'Vehicle year must be 2017 or newer');
+            }
+            
+            if (odometer > 120000) {
+                eligible = false;
+                reasons.push(currentLang === 'ar' ? 'المسافة يجب ألا تتجاوز 120,000 كم' : 'Mileage must not exceed 120,000 km');
+            }
+            
+            currentSelection = {
+                make, 
+                model: model === 'Other' ? modelOther : model,
+                trim: trim === 'Other' ? trimOther : (trim || 'Standard'),
+                year, 
+                odometer, 
+                eligible, 
+                reasons
+            };
+            
+            const resultsSection = document.getElementById('resultsSection');
+            resultsSection.style.display = 'block';
+            
+            if (!eligible) {
+                document.getElementById('ineligibleMessage').classList.remove('hidden');
+                document.getElementById('eligibleContent').classList.add('hidden');
+                updateIneligibleMessage();
+                document.getElementById('whatsappBtn').disabled = true;
+            } else {
+                document.getElementById('ineligibleMessage').classList.add('hidden');
+                document.getElementById('eligibleContent').classList.remove('hidden');
+                calculatePackages();
+            }
+            
+            resultsSection.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function calculatePackages() {
+            const category = determineCategory(currentSelection.make);
+            const usageBand = determineUsageBand(currentSelection.odometer);
+            const hasPerformanceSurcharge = checkPerformanceSurcharge(currentSelection.make, currentSelection.trim);
+            
+            currentSelection.category = category;
+            currentSelection.usageBand = usageBand;
+            currentSelection.hasPerformanceSurcharge = hasPerformanceSurcharge;
+            currentSelection.selectedPackage = null;
+            
+            const card = rateCards[category];
+            const container = document.getElementById('packageContainer');
+            container.innerHTML = '';
+            
+            const allowedTerms = card.terms.filter(term => term.allowed.includes(usageBand));
+            const isHeavyUse = usageBand === 'HEAVY';
+            
+            allowedTerms.forEach((term, index) => {
+                let price = term.price;
+                let notes = [];
+                let notesAr = [];
+                
+                if (category === 'EUROPEAN' && hasPerformanceSurcharge) {
+                    price += 2000;
+                    notes.push('Includes performance surcharge (+2,000 AED)');
+                    notesAr.push('يشمل رسوم الأداء (+2,000 درهم)');
+                }
+                
+                if (isHeavyUse) {
+                    notes.push('Subject to inspection/approval');
+                    notesAr.push('خاضع للفحص/الموافقة');
+                }
+                
+                const cardEl = document.createElement('div');
+                cardEl.className = 'package-card';
+                cardEl.onclick = function() { selectPackage(index, term, price, notes, notesAr); };
+                
+                const termDisplay = currentLang === 'ar' ? term.termAr : term.term;
+                const kmDisplay = currentLang === 'ar' ? term.kmLimitAr : term.kmLimit;
+                const capText = currentLang === 'ar' ? 'حد المطالبة' : 'Per-claim cap';
+                const notesText = currentLang === 'ar' ? notesAr.join(' • ') : notes.join(' • ');
+                
+                cardEl.innerHTML = `
+                    <div class="package-term">${termDisplay}</div>
+                    <div class="package-km">${kmDisplay}</div>
+                    <div class="package-price">AED ${price.toLocaleString()}</div>
+                    <div class="package-cap">${capText}: ${card.perClaimCap.toLocaleString()} AED</div>
+                    ${notes.length > 0 ? `<div class="package-notes">${notesText}</div>` : ''}
+                `;
+                
+                container.appendChild(cardEl);
+            });
+            
+            document.getElementById('finalSelection').classList.add('hidden');
+            document.getElementById('whatsappBtn').disabled = true;
+        }
+
+        function selectPackage(index, term, price, notes, notesAr) {
+            const cards = document.querySelectorAll('.package-card');
+            cards.forEach((card, i) => {
+                if (i === index) card.classList.add('selected');
+                else card.classList.remove('selected');
+            });
+            
+            currentSelection.selectedIndex = index;
+            currentSelection.selectedPackage = term;
+            currentSelection.finalPrice = price;
+            currentSelection.notes = notes;
+            currentSelection.notesAr = notesAr;
+            
+            updateFinalDisplay();
+            
+            document.getElementById('finalSelection').classList.remove('hidden');
+            document.getElementById('whatsappBtn').disabled = false;
+            document.getElementById('finalSelection').scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+
+        function updateFinalDisplay() {
+            const term = currentSelection.selectedPackage;
+            if (!term) return;
+            
+            const termDisplay = currentLang === 'ar' ? term.termAr : term.term;
+            const kmDisplay = currentLang === 'ar' ? term.kmLimitAr : term.kmLimit;
+            
+            document.getElementById('selectedTerm').textContent = `${termDisplay} • ${kmDisplay}`;
+            document.getElementById('finalPrice').textContent = currentSelection.finalPrice.toLocaleString();
+            
+            const surchargeNote = document.getElementById('surchargeNote');
+            if (currentSelection.hasPerformanceSurcharge && currentSelection.category === 'EUROPEAN') {
+                surchargeNote.textContent = currentLang === 'ar' ? 
+                    'يشمل رسوم الأداء (+2,000 درهم)' : 'Includes +2,000 AED performance surcharge';
+                surchargeNote.classList.remove('hidden');
+            } else {
+                surchargeNote.classList.add('hidden');
+            }
+        }
+
+        function sendWhatsApp() {
+            if (!currentSelection.selectedPackage) return;
+            
+            const WHATSAPP_NUMBER = '971501187630';
+            let message;
+            
+            if (currentLang === 'ar') {
+                message = `مرحباً 1885، أود الحصول على عرض ضمان.
+الماركة: ${currentSelection.make}
+الطراز: ${currentSelection.model}
+الفئة: ${currentSelection.trim}
+السنة: ${currentSelection.year}
+المسافة: ${currentSelection.odometer.toLocaleString()} كم
+فئة الاستخدام: ${currentSelection.usageBand === 'NEW' ? 'جديد' : currentSelection.usageBand === 'MEDIUM' ? 'متوسط' : 'ثقيل'}
+الباقة المختارة: ${currentSelection.selectedPackage.termAr}
+السعر: ${currentSelection.finalPrice.toLocaleString()} درهم (غير شامل VAT)
+
+ملاحظة: خاضع لفحص ما قبل الضمان. يجب إصلاح أي مشاكل قبل تفعيل الضمان.`;
+            } else {
+                message = `Hello 1885, I'd like a warranty quote.
+Make: ${currentSelection.make}
+Model: ${currentSelection.model}
+Trim/Badge: ${currentSelection.trim}
+Year: ${currentSelection.year}
+Odometer: ${currentSelection.odometer.toLocaleString()} km
+Usage band: ${currentSelection.usageBand}
+Selected package: ${currentSelection.selectedPackage.term}
+Price: AED ${currentSelection.finalPrice.toLocaleString()} (VAT not included)
+
+Note: Subject to pre-warranty inspection. Any issues found must be repaired before warranty activation.`;
+            }
+            
+            window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`, '_blank');
+        }
+
+        // Initialize
+        window.onload = function() {
+            populateMakes();
+            populateYears();
+        };
+    </script>
+</body>
+</html>
