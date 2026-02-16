@@ -817,7 +817,7 @@
             const usageBand = determineUsageBand(currentSelection.odometer);
 
             // Sports/performance surcharge is only for EUROPEAN rate card (as per your rule)
-            const hasPerformanceSurcharge = (category === 'EUROPEAN') && checkPerformanceSurcharge(currentSelection.make, currentSelection.model, currentSelection.trim);
+            const hasPerformanceSurcharge = checkPerformanceSurcharge(currentSelection.make, currentSelection.model, currentSelection.trim);
 
             currentSelection.category = category;
             currentSelection.usageBand = usageBand;
@@ -903,7 +903,7 @@
             document.getElementById('finalPrice').textContent = currentSelection.finalPrice.toLocaleString();
 
             const surchargeNote = document.getElementById('surchargeNote');
-            if (currentSelection.hasPerformanceSurcharge && currentSelection.category === 'EUROPEAN') {
+            if (currentSelection.hasPerformanceSurcharge) {
                 surchargeNote.textContent = currentLang === 'ar' ? 
                     'يشمل رسوم الأداء (+3,000 درهم)' : 'Includes +3,000 AED performance surcharge';
                 surchargeNote.classList.remove('hidden');
