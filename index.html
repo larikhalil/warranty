@@ -4,7 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>1885 Car Service Centre - Warranty Calculator</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&family=Inter:wght@400;500;600;700&family=Sora:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
             --bg-deep: #0a0a0a;
@@ -346,6 +348,187 @@
             }
         }
 
+
+        /* =====================================================================
+           2026 VISUAL UPGRADE (overrides the baseline above) — elevated
+           dark+gold system matching autocare: Sora display, solid panels,
+           scarce gold, signature price reveal. + membership toggles, coverage.
+        ===================================================================== */
+        :root {
+            --bg-deep: #0A0A0B;
+            --surface: #141416;
+            --surface-2: #17171A;
+            --gold-primary: #D4AF37;
+            --gold-soft: #C9A227;
+            --gold-light: #EAD79B;
+            --gold-dark: #8B6914;
+            --red-primary: #E31E24;
+            --red-dark: #B91C1C;
+            --green-primary: #25D366;
+            --green-dark: #128C7E;
+            --ink: #F5F3EE;
+            --text-primary: #F5F3EE;
+            --text-secondary: #AEA9A1;
+            --border-gold: rgba(212, 175, 55, 0.18);
+            --border-soft: rgba(255, 255, 255, 0.06);
+            --r-lg: 16px; --r-md: 12px; --r-sm: 8px;
+            --shadow-card: inset 0 1px 0 rgba(255,255,255,0.05), 0 18px 44px rgba(0,0,0,0.5);
+        }
+
+        body { -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+
+        .bg-pattern {
+            opacity: 1;
+            background-image:
+                radial-gradient(1100px 560px at 50% -12%, rgba(212,175,55,0.07) 0%, transparent 60%),
+                linear-gradient(180deg, #0E0E11 0%, var(--bg-deep) 38%);
+        }
+        .bg-texture {
+            opacity: 1;
+            background-image: linear-gradient(118deg, transparent 42%, rgba(255,255,255,0.022) 50%, transparent 58%);
+        }
+
+        .container { max-width: 1120px; padding: 22px; }
+
+        header { padding: 18px 0; margin-bottom: 8px; border-bottom: 1px solid transparent;
+            border-image: linear-gradient(90deg, transparent, var(--border-gold), transparent) 1; }
+        .brand { gap: 18px; }
+        .logo, .logo-fallback { width: 72px; height: 72px; }
+        .brand-name { font-family: 'Sora', sans-serif; font-size: 1.35rem; font-weight: 700; letter-spacing: 0.01em; }
+
+        .language-toggle { gap: 6px; border-radius: 999px; }
+        .lang-btn { padding: 11px 22px; min-height: 44px; border-radius: 999px; font-size: 0.92rem; transition: all 0.25s ease; }
+
+        h1, h2, h3 { font-family: 'Sora', sans-serif; text-transform: none; letter-spacing: -0.01em; line-height: 1.2; font-weight: 700; }
+
+        .gold-gradient-text { background: none; color: var(--gold-primary); -webkit-text-fill-color: currentColor;
+            -webkit-background-clip: border-box; background-clip: border-box; }
+        h2.gold-gradient-text, h3.gold-gradient-text { color: var(--ink); -webkit-text-fill-color: var(--ink); }
+
+        /* Hero */
+        .hero { text-align: center; padding: 24px 0 30px; margin-bottom: 8px; position: relative;
+            animation: heroIn 0.6s cubic-bezier(0.22,1,0.36,1) both; }
+        .hero::after { content: ''; position: absolute; left: 50%; bottom: 0; transform: translateX(-50%);
+            width: min(440px,78%); height: 1px; background: linear-gradient(90deg, transparent, var(--gold-primary), transparent); opacity: 0.75; }
+        .hero-eyebrow { font-family: 'Inter', sans-serif; font-size: 0.72rem; font-weight: 600;
+            letter-spacing: 0.22em; text-transform: uppercase; color: var(--gold-primary); margin-bottom: 14px; }
+        .page-title { font-family: 'Sora', sans-serif; font-size: clamp(1.95rem, 5vw, 2.55rem);
+            letter-spacing: -0.015em; line-height: 1.08; text-transform: none; margin: 0 0 12px; }
+        .hero-sub { color: var(--text-secondary); font-size: 1.02rem; max-width: 560px; margin: 0 auto; }
+        @keyframes heroIn { from { opacity:0; transform: translateY(10px);} to {opacity:1; transform:none;} }
+
+        /* Solid panels */
+        .glass-card { background: var(--surface); backdrop-filter: none; -webkit-backdrop-filter: none;
+            border: 1px solid var(--border-gold); border-radius: var(--r-lg); padding: 32px; margin-bottom: 24px; box-shadow: var(--shadow-card); }
+        .section-eyebrow { display: inline-block; width: 28px; height: 2px; background: var(--gold-primary); border-radius: 2px; margin-bottom: 16px; }
+
+        label { font-size: 0.78rem; letter-spacing: 0.08em; }
+        input, select { padding: 15px 18px; background: rgba(0,0,0,0.45); border: 1px solid var(--border-gold);
+            border-radius: var(--r-md); transition: border-color 0.2s ease, box-shadow 0.2s ease; }
+        input:focus, select:focus { border-color: var(--gold-soft); box-shadow: 0 0 0 3px rgba(212,175,55,0.15); }
+
+        .btn-primary { border-radius: var(--r-md); font-family: 'Sora', sans-serif; font-size: 1.02rem; font-weight: 600; letter-spacing: 0.12em;
+            background: linear-gradient(180deg, var(--red-primary) 0%, var(--red-dark) 100%);
+            box-shadow: inset 0 1px 0 rgba(255,255,255,0.18), 0 8px 22px rgba(227,30,36,0.22); transition: transform 0.25s ease, box-shadow 0.25s ease; }
+        .btn-primary:hover:not(:disabled) { transform: translateY(-2px); box-shadow: inset 0 1px 0 rgba(255,255,255,0.22), 0 12px 28px rgba(227,30,36,0.3); }
+        .btn-primary::after { background: linear-gradient(90deg, transparent, rgba(255,255,255,0.18), transparent); }
+        .btn-whatsapp { border-radius: var(--r-md); background: linear-gradient(180deg, var(--green-primary) 0%, var(--green-dark) 100%);
+            box-shadow: inset 0 1px 0 rgba(255,255,255,0.2), 0 8px 22px rgba(37,211,102,0.18); }
+
+        .lang-btn:focus-visible, .package-card:focus-visible, .btn-primary:focus-visible,
+        .btn-whatsapp:focus-visible, .btn-download:focus-visible { outline: 2px solid var(--gold-primary); outline-offset: 3px; }
+        .member-toggle input:focus-visible + .member-switch { outline: 2px solid var(--gold-primary); outline-offset: 2px; }
+
+        /* Package cards */
+        .package-grid { grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
+        .package-card { background: var(--surface-2); border: 1px solid var(--border-gold); border-radius: var(--r-md); padding: 22px;
+            transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease, background 0.25s ease; }
+        .package-card:hover { transform: translateY(-3px); box-shadow: 0 12px 30px rgba(0,0,0,0.4); border-color: var(--gold-soft); }
+        .package-card.selected { border-color: var(--gold-primary);
+            background: linear-gradient(180deg, rgba(212,175,55,0.07), rgba(212,175,55,0.02)); box-shadow: 0 0 0 1px var(--gold-primary), 0 14px 34px rgba(212,175,55,0.1); }
+        .package-card.selected::after { content: '✓'; top: 14px; right: 14px; width: 26px; height: 26px; font-size: 0.8rem; }
+        .package-term { font-family: 'Sora', sans-serif; font-size: 1.12rem; }
+        .package-price { font-family: 'Sora', sans-serif; font-size: 1.7rem; color: var(--ink); font-variant-numeric: tabular-nums; margin-bottom: 4px; }
+        .pkg-was { font-size: 0.95rem; color: var(--text-secondary); text-decoration: line-through; text-decoration-color: rgba(255,255,255,0.4); }
+        .pkg-member { font-size: 0.78rem; color: #7ee2a8; font-weight: 600; margin-bottom: 6px; }
+        .package-notes { color: var(--gold-light); border-top: 1px solid var(--border-gold); }
+
+        .ineligible-banner { background: rgba(227,30,36,0.08); border: 1px solid rgba(227,30,36,0.45); color: #ff9a9a; border-radius: var(--r-lg); padding: 28px; }
+        .ineligible-banner h2 { color: #ff6b6b; font-family: 'Sora', sans-serif; }
+        .inspection-notice { background: rgba(212,175,55,0.07); border-left: 3px solid var(--gold-primary); border-radius: 0 var(--r-md) var(--r-md) 0; padding: 18px 20px; }
+
+        /* Final price — signature */
+        .final-price-display { border-radius: var(--r-lg); border: 1px solid var(--border-gold); background: rgba(0,0,0,0.32); padding: 34px 24px; position: relative; overflow: hidden; }
+        .final-price-display::after { content: ''; position: absolute; left: 50%; bottom: 18px; transform: translateX(-50%); width: 120px; height: 1px;
+            background: linear-gradient(90deg, transparent, var(--gold-primary), transparent); opacity: 0.6; }
+        .total-label { color: var(--text-secondary); font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em; font-size: 0.82rem; }
+        .selected-term { font-size: 1.05rem; color: var(--gold-primary); margin: 8px 0 4px; }
+        .price-original { font-family: 'Sora', sans-serif; font-size: 1.2rem; font-weight: 600; color: var(--text-secondary);
+            text-decoration: line-through; text-decoration-color: rgba(255,255,255,0.45); margin-bottom: 2px; }
+        .final-price-amount { font-family: 'Sora', sans-serif; font-size: clamp(2.6rem, 8vw, 3.5rem); font-weight: 700;
+            font-variant-numeric: tabular-nums; letter-spacing: -0.02em; line-height: 1.04; margin: 10px 0 8px; display: inline-block; color: transparent;
+            background: linear-gradient(100deg, #B8941F 0%, #D4AF37 22%, #F6E7B6 38%, #D4AF37 54%, #B8941F 78%, #D4AF37 100%);
+            background-size: 220% 100%; background-position: 50% 0; -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+        .final-price-amount.is-revealed { animation: priceSheen 1.15s cubic-bezier(0.22,1,0.36,1) both; }
+        @keyframes priceSheen { 0% { background-position: 130% 0; } 100% { background-position: 50% 0; } }
+        .vat-note { color: var(--text-secondary); font-size: 0.9rem; }
+        .member-save { display: flex; width: fit-content; max-width: 100%; align-items: center; justify-content: center; gap: 8px;
+            margin: 12px auto 4px; padding: 6px 14px; text-align: center; background: rgba(37,211,102,0.12); border: 1px solid rgba(37,211,102,0.35);
+            border-radius: 999px; color: #7ee2a8; font-size: 0.86rem; font-weight: 600; }
+
+        /* Membership card */
+        .member-toggles { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 16px 0 22px; }
+        .member-toggle { display: flex; align-items: center; gap: 12px; padding: 16px;
+            background: linear-gradient(180deg, rgba(212,175,55,0.08), rgba(212,175,55,0.03)); border: 1px solid var(--border-gold);
+            border-radius: var(--r-md); cursor: pointer; user-select: none; transition: border-color 0.2s ease; }
+        .member-toggle:hover { border-color: var(--gold-soft); }
+        .member-toggle input { position: absolute; opacity: 0; width: 0; height: 0; }
+        .member-switch { flex: none; width: 46px; height: 26px; border-radius: 999px; background: rgba(255,255,255,0.12);
+            border: 1px solid var(--border-gold); position: relative; transition: background 0.25s ease, border-color 0.25s ease; }
+        .member-switch::after { content: ''; position: absolute; top: 2px; left: 2px; width: 20px; height: 20px; border-radius: 50%; background: #fff; transition: transform 0.25s ease; }
+        .member-toggle input:checked + .member-switch { background: var(--green-primary); border-color: var(--green-primary); }
+        .member-toggle input:checked + .member-switch::after { transform: translateX(20px); }
+        [dir="rtl"] .member-switch::after { left: auto; right: 2px; }
+        [dir="rtl"] .member-toggle input:checked + .member-switch::after { transform: translateX(-20px); }
+        .member-text { display: flex; flex-direction: column; gap: 2px; flex: 1; }
+        .member-name { font-family: 'Sora', sans-serif; font-weight: 700; color: var(--ink); font-size: 1.05rem; }
+        .member-off { font-size: 0.8rem; color: var(--gold-light); font-weight: 600; }
+        .member-perks { list-style: none; margin: 6px 0 0; padding: 0; display: grid; gap: 10px; }
+        .member-perks li { position: relative; padding-left: 26px; color: var(--text-secondary); font-size: 0.92rem; line-height: 1.5; }
+        .member-perks li::before { content: '✓'; position: absolute; left: 0; top: 0; color: var(--gold-primary); font-weight: 700; }
+        [dir="rtl"] .member-perks li { padding-left: 0; padding-right: 26px; }
+        [dir="rtl"] .member-perks li::before { left: auto; right: 0; }
+
+        /* Coverage + PDF */
+        .coverage-notice { background: rgba(37,211,102,0.06); border: 1px solid rgba(37,211,102,0.25); border-radius: var(--r-md);
+            padding: 18px 20px; margin: 24px 0; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px; }
+        .coverage-text { color: var(--text-secondary); font-size: 0.95rem; flex: 1 1 280px; }
+        .coverage-text strong { color: var(--ink); display: block; margin-bottom: 4px; }
+        .btn-download { display: inline-flex; align-items: center; gap: 10px; flex: none; padding: 12px 20px; border-radius: var(--r-md);
+            cursor: pointer; text-decoration: none; background: rgba(212,175,55,0.12); border: 1px solid var(--gold-primary); color: var(--gold-primary);
+            font-weight: 600; font-size: 0.92rem; transition: background 0.2s ease, transform 0.2s ease; }
+        .btn-download:hover { background: rgba(212,175,55,0.2); transform: translateY(-1px); }
+        .btn-download svg { width: 18px; height: 18px; }
+
+        [dir="rtl"] h1, [dir="rtl"] h2, [dir="rtl"] h3, [dir="rtl"] .brand-name,
+        [dir="rtl"] .package-term, [dir="rtl"] .final-price-amount, [dir="rtl"] .btn-primary { font-family: 'Cairo', sans-serif; }
+
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after { animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; transition-duration: 0.001ms !important; scroll-behavior: auto !important; }
+        }
+
+        @media (max-width: 768px) {
+            .container { padding: 16px; }
+            .glass-card { padding: 22px 18px; }
+            .brand { flex-wrap: wrap; justify-content: center; gap: 14px; }
+            .logo, .logo-fallback { width: 58px; height: 58px; }
+            .brand-name { font-size: 1.1rem; text-align: center; }
+            .page-title { font-size: clamp(1.7rem, 7vw, 2.3rem); }
+            .member-toggles { grid-template-columns: 1fr; }
+            .final-price-amount { font-size: clamp(1.9rem, 9vw, 2.7rem); }
+            .coverage-notice { flex-direction: column; align-items: stretch; text-align: center; }
+            .btn-download { justify-content: center; }
+        }
     </style>
 </head>
 <body>
@@ -355,17 +538,53 @@
     <div class="container">
         <header>
             <div class="brand">
-                <img src="LOGO.png" alt="1885" class="logo" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                <img src="LOGO.png" alt="" class="logo" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
                 <div class="logo-fallback" style="display: none;">1885</div>
                 <div class="brand-name gold-gradient-text">1885 CAR SERVICE CENTRE</div>
             </div>
             <div class="language-toggle">
-                <button class="lang-btn active" onclick="setLanguage('en', this)">English</button>
-                <button class="lang-btn" onclick="setLanguage('ar', this)">العربية</button>
+                <button class="lang-btn active" aria-pressed="true" onclick="setLanguage('en', this)">English</button>
+                <button class="lang-btn" lang="ar" aria-pressed="false" onclick="setLanguage('ar', this)">العربية</button>
             </div>
         </header>
 
-        <h1 class="page-title gold-gradient-text" data-en="Warranty Calculator" data-ar="حاسبة الضمان">Warranty Calculator</h1>
+        <section class="hero">
+            <div class="hero-eyebrow" data-en="Mechanical Protection · Up to 5 Years" data-ar="حماية ميكانيكية · حتى 5 سنوات">Mechanical Protection · Up to 5 Years</div>
+            <h1 class="page-title gold-gradient-text" data-en="Warranty Calculator" data-ar="حاسبة الضمان">Warranty Calculator</h1>
+            <p class="hero-sub" data-en="Check your car's eligibility and get an instant warranty quote — sent straight to us on WhatsApp." data-ar="تحقق من أهلية سيارتك واحصل على عرض ضمان فوري — يصلنا مباشرة عبر واتساب.">Check your car's eligibility and get an instant warranty quote — sent straight to us on WhatsApp.</p>
+        </section>
+
+        <div class="glass-card">
+            <span class="section-eyebrow" aria-hidden="true"></span>
+            <h2 class="gold-gradient-text" style="margin-bottom: 6px;" data-en="Mazaya &amp; Fazaa" data-ar="مزايا وفزاع">Mazaya &amp; Fazaa</h2>
+            <p style="color: var(--text-secondary); margin-bottom: 4px;" data-en="Member benefits &amp; discounts — switch on your card to apply your warranty discount." data-ar="فوائد وخصومات الأعضاء — فعّل بطاقتك لتطبيق خصم الضمان.">Member benefits &amp; discounts — switch on your card to apply your warranty discount.</p>
+
+            <div class="member-toggles">
+                <label class="member-toggle" for="mazayaToggle">
+                    <input type="checkbox" id="mazayaToggle" onchange="onMembershipChange('mazaya', this)">
+                    <span class="member-switch" aria-hidden="true"></span>
+                    <span class="member-text">
+                        <span class="member-name" data-en="Mazaya" data-ar="مزايا">Mazaya</span>
+                        <span class="member-off" data-en="AED 600 off warranty" data-ar="600 درهم خصم على الضمان">AED 600 off warranty</span>
+                    </span>
+                </label>
+                <label class="member-toggle" for="fazaaToggle">
+                    <input type="checkbox" id="fazaaToggle" onchange="onMembershipChange('fazaa', this)">
+                    <span class="member-switch" aria-hidden="true"></span>
+                    <span class="member-text">
+                        <span class="member-name" data-en="Fazaa" data-ar="فزاع">Fazaa</span>
+                        <span class="member-off" data-en="AED 500 off warranty" data-ar="500 درهم خصم على الضمان">AED 500 off warranty</span>
+                    </span>
+                </label>
+            </div>
+
+            <ul class="member-perks">
+                <li data-en="Up to 25% off labour for members with an active 1885 warranty contract — for repairs or services not covered under the warranty." data-ar="خصم حتى 25% على أجور العمل للأعضاء الذين لديهم عقد ضمان 1885 ساري — للإصلاحات أو الخدمات غير المشمولة بالضمان.">Up to 25% off labour for members with an active 1885 warranty contract — for repairs or services not covered under the warranty.</li>
+                <li data-en="Up to 20% off labour for members without an active 1885 warranty contract." data-ar="خصم حتى 20% على أجور العمل للأعضاء بدون عقد ضمان 1885 ساري.">Up to 20% off labour for members without an active 1885 warranty contract.</li>
+                <li data-en="Up to 20% off labour on consumable part replacements — oil, filters, brake pads, windscreen wipers, bulbs and fuses." data-ar="خصم حتى 20% على أجور استبدال القطع الاستهلاكية — الزيت، الفلاتر، تيل الفرامل، مساحات الزجاج، اللمبات والفيوزات.">Up to 20% off labour on consumable part replacements — oil, filters, brake pads, windscreen wipers, bulbs and fuses.</li>
+                <li data-en="Free one-way vehicle recovery to 1885 Car Service Centre (subject to service eligibility &amp; confirmation)." data-ar="سحب مجاني للمركبة باتجاه واحد إلى مركز 1885 لخدمات السيارات (وفقاً لأهلية الخدمة والتأكيد).">Free one-way vehicle recovery to 1885 Car Service Centre (subject to service eligibility &amp; confirmation).</li>
+            </ul>
+        </div>
 
         <div class="glass-card">
             <h2 class="gold-gradient-text" style="margin-bottom: 25px; font-size: 1.3rem;" data-en="Vehicle Details" data-ar="تفاصيل المركبة">Vehicle Details</h2>
@@ -432,11 +651,24 @@
 
                 <div id="packageContainer" class="package-grid"></div>
 
+                <div class="coverage-notice">
+                    <div class="coverage-text">
+                        <strong data-en="Comprehensive coverage" data-ar="تغطية شاملة">Comprehensive coverage</strong>
+                        <span data-en="Your 1885 warranty covers everything except the parts in this list." data-ar="يغطي ضمان 1885 كل شيء باستثناء القطع الموجودة في هذه القائمة.">Your 1885 warranty covers everything except the parts in this list.</span>
+                    </div>
+                    <a class="btn-download" href="1885-parts-not-covered.pdf" download target="_blank" rel="noopener">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                        <span data-en="What's NOT Covered (PDF)" data-ar="ما هو غير مشمول (PDF)">What's NOT Covered (PDF)</span>
+                    </a>
+                </div>
+
                 <div id="finalSelection" class="final-price-display hidden">
-                    <div style="color: var(--text-secondary); margin-bottom: 10px;" data-en="Selected Package" data-ar="الباقة المختارة">Selected Package</div>
-                    <div id="selectedTerm" style="font-size: 1.2rem; color: var(--gold-primary); margin-bottom: 10px;"></div>
-                    <div class="final-price-amount">AED <span id="finalPrice">0</span></div>
-                    <div style="color: var(--text-secondary); font-size: 0.9rem;" data-en="VAT not included" data-ar="غير شامل ضريبة القيمة المضافة">VAT not included</div>
+                    <div class="total-label" data-en="Selected Package" data-ar="الباقة المختارة">Selected Package</div>
+                    <div id="selectedTerm" class="selected-term"></div>
+                    <div class="price-original hidden" id="priceOriginal"></div>
+                    <div class="final-price-amount" id="finalPriceAmount">AED 0</div>
+                    <div class="member-save hidden" id="memberSave"></div>
+                    <div class="vat-note" data-en="VAT not included" data-ar="غير شامل ضريبة القيمة المضافة">VAT not included</div>
                     <div id="surchargeNote" class="hidden" style="color: var(--gold-light); margin-top: 10px; font-size: 0.9rem;"></div>
                 </div>
 
@@ -493,14 +725,47 @@
 
         let currentLang = 'en';
         let currentSelection = {};
+        let activeMembership = null; // 'mazaya' | 'fazaa' | null
+        const MEMBER_DISCOUNT = { mazaya: 600, fazaa: 500 };
+        const MEMBER_NAME = { mazaya: { en: 'Mazaya', ar: 'مزايا' }, fazaa: { en: 'Fazaa', ar: 'فزاع' } };
+        function memberDiscount() { return activeMembership ? MEMBER_DISCOUNT[activeMembership] : 0; }
+        function formatAEDw(n) { return 'AED ' + Number(n).toLocaleString('en-US'); }
+        function prefersReducedMotion() { return window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches; }
+
+        function animatePrice(el, target) {
+            el.classList.remove('is-revealed'); void el.offsetWidth; el.classList.add('is-revealed');
+            if (prefersReducedMotion()) { el.textContent = formatAEDw(target); return; }
+            const dur = 700, start = performance.now();
+            function frame(now) {
+                const t = Math.min(1, (now - start) / dur);
+                const e = 1 - Math.pow(1 - t, 3);
+                el.textContent = formatAEDw(Math.round(target * e));
+                if (t < 1) requestAnimationFrame(frame); else el.textContent = formatAEDw(target);
+            }
+            requestAnimationFrame(frame);
+        }
+
+        function onMembershipChange(type, el) {
+            if (el.checked) {
+                activeMembership = type;
+                const other = (type === 'mazaya') ? 'fazaaToggle' : 'mazayaToggle';
+                document.getElementById(other).checked = false;
+            } else {
+                activeMembership = null;
+            }
+            if (currentSelection.eligible === true && document.getElementById('resultsSection').style.display === 'block') {
+                calculatePackages(true);
+            }
+        }
 
         function setLanguage(lang, btn) {
             currentLang = lang;
             document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
             document.documentElement.lang = lang;
 
-            document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+            document.querySelectorAll('.lang-btn').forEach(b => { b.classList.remove('active'); b.setAttribute('aria-pressed', 'false'); });
             btn.classList.add('active');
+            btn.setAttribute('aria-pressed', 'true');
 
             document.querySelectorAll('[data-en]').forEach(el => {
                 if (el.tagName === 'INPUT') {
@@ -519,16 +784,7 @@
             });
 
             if (currentSelection.eligible === true && document.getElementById('resultsSection').style.display === 'block') {
-                calculatePackages();
-                if (currentSelection.selectedPackage) {
-                    const cards = document.querySelectorAll('.package-card');
-                    cards.forEach((card, i) => {
-                        if (i === currentSelection.selectedIndex) {
-                            card.classList.add('selected');
-                            updateFinalDisplay();
-                        }
-                    });
-                }
+                calculatePackages(true);
             } else if (currentSelection.eligible === false) {
                 updateIneligibleMessage();
             }
@@ -812,7 +1068,7 @@
             resultsSection.scrollIntoView({ behavior: 'smooth' });
         }
 
-        function calculatePackages() {
+        function calculatePackages(preserve) {
             const category = determineCategory(currentSelection.make);
             const usageBand = determineUsageBand(currentSelection.odometer);
 
@@ -822,7 +1078,7 @@
             currentSelection.category = category;
             currentSelection.usageBand = usageBand;
             currentSelection.hasPerformanceSurcharge = hasPerformanceSurcharge;
-            currentSelection.selectedPackage = null;
+            if (!preserve) { currentSelection.selectedPackage = null; currentSelection.selectedIndex = null; }
 
             const card = rateCards[category];
             const container = document.getElementById('packageContainer');
@@ -830,15 +1086,17 @@
 
             const allowedTerms = card.terms.filter(term => term.allowed.includes(usageBand));
             const isHeavyUse = usageBand === 'HEAVY';
+            const disc = memberDiscount();
+            const memName = activeMembership ? MEMBER_NAME[activeMembership][currentLang] : '';
 
             allowedTerms.forEach((term, index) => {
-                let price = term.price;
+                let gross = term.price;
                 let notes = [];
                 let notesAr = [];
 
                 // Sports/Performance surcharge: +3,000 AED
                 if (hasPerformanceSurcharge) {
-                    price += 3000;
+                    gross += 3000;
                     notes.push('Includes performance surcharge (+3,000 AED)');
                     notesAr.push('يشمل رسوم الأداء (+3,000 درهم)');
                 }
@@ -848,19 +1106,28 @@
                     notesAr.push('خاضع للفحص/الموافقة');
                 }
 
+                const net = Math.max(0, gross - disc);
+
                 const cardEl = document.createElement('div');
                 cardEl.className = 'package-card';
-                cardEl.onclick = function() { selectPackage(index, term, price, notes, notesAr); };
+                cardEl.setAttribute('role', 'button');
+                cardEl.setAttribute('tabindex', '0');
+                cardEl.onclick = function() { selectPackage(index, term, gross, notes, notesAr); };
+                cardEl.onkeydown = function(e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); selectPackage(index, term, gross, notes, notesAr); } };
 
                 const termDisplay = currentLang === 'ar' ? term.termAr : term.term;
                 const kmDisplay = currentLang === 'ar' ? term.kmLimitAr : term.kmLimit;
                 const capText = currentLang === 'ar' ? 'حد المطالبة' : 'Per-claim cap';
                 const notesText = currentLang === 'ar' ? notesAr.join(' • ') : notes.join(' • ');
+                const wasHtml = disc > 0 ? `<div class="pkg-was">${formatAEDw(gross)}</div>` : '';
+                const memHtml = disc > 0 ? `<div class="pkg-member">${memName} −${formatAEDw(disc)}</div>` : '';
 
                 cardEl.innerHTML = `
                     <div class="package-term">${termDisplay}</div>
                     <div class="package-km">${kmDisplay}</div>
-                    <div class="package-price">AED ${price.toLocaleString()}</div>
+                    ${wasHtml}
+                    <div class="package-price">${formatAEDw(net)}</div>
+                    ${memHtml}
                     <div class="package-cap">${capText}: ${card.perClaimCap.toLocaleString()} AED</div>
                     ${notes.length > 0 ? `<div class="package-notes">${notesText}</div>` : ''}
                 `;
@@ -868,43 +1135,73 @@
                 container.appendChild(cardEl);
             });
 
-            document.getElementById('finalSelection').classList.add('hidden');
-            document.getElementById('whatsappBtn').disabled = true;
+            if (preserve && currentSelection.selectedIndex != null && container.children[currentSelection.selectedIndex]) {
+                container.children[currentSelection.selectedIndex].classList.add('selected');
+                container.children[currentSelection.selectedIndex].setAttribute('aria-pressed', 'true');
+                updateFinalDisplay(false);
+                document.getElementById('finalSelection').classList.remove('hidden');
+                document.getElementById('whatsappBtn').disabled = false;
+            } else {
+                document.getElementById('finalSelection').classList.add('hidden');
+                document.getElementById('whatsappBtn').disabled = true;
+            }
         }
 
-        function selectPackage(index, term, price, notes, notesAr) {
+        function selectPackage(index, term, gross, notes, notesAr) {
             const cards = document.querySelectorAll('.package-card');
             cards.forEach((card, i) => {
-                if (i === index) card.classList.add('selected');
-                else card.classList.remove('selected');
+                card.classList.toggle('selected', i === index);
+                card.setAttribute('aria-pressed', i === index ? 'true' : 'false');
             });
 
             currentSelection.selectedIndex = index;
             currentSelection.selectedPackage = term;
-            currentSelection.finalPrice = price;
+            currentSelection.grossPrice = gross;
             currentSelection.notes = notes;
             currentSelection.notesAr = notesAr;
 
-            updateFinalDisplay();
+            updateFinalDisplay(true);
 
             document.getElementById('finalSelection').classList.remove('hidden');
             document.getElementById('whatsappBtn').disabled = false;
-            document.getElementById('finalSelection').scrollIntoView({ behavior: 'smooth', block: 'center' });
+            document.getElementById('finalSelection').scrollIntoView({ behavior: prefersReducedMotion() ? 'auto' : 'smooth', block: 'center' });
         }
 
-        function updateFinalDisplay() {
+        function updateFinalDisplay(animate) {
             const term = currentSelection.selectedPackage;
             if (!term) return;
 
             const termDisplay = currentLang === 'ar' ? term.termAr : term.term;
             const kmDisplay = currentLang === 'ar' ? term.kmLimitAr : term.kmLimit;
-
             document.getElementById('selectedTerm').textContent = `${termDisplay} • ${kmDisplay}`;
-            document.getElementById('finalPrice').textContent = currentSelection.finalPrice.toLocaleString();
+
+            const gross = currentSelection.grossPrice;
+            const disc = memberDiscount();
+            const net = Math.max(0, gross - disc);
+            currentSelection.finalPrice = net;
+
+            const priceEl = document.getElementById('finalPriceAmount');
+            if (animate) animatePrice(priceEl, net);
+            else { priceEl.classList.add('is-revealed'); priceEl.textContent = formatAEDw(net); }
+
+            const po = document.getElementById('priceOriginal');
+            const ms = document.getElementById('memberSave');
+            if (disc > 0) {
+                po.textContent = formatAEDw(gross);
+                po.classList.remove('hidden');
+                const name = MEMBER_NAME[activeMembership][currentLang];
+                ms.textContent = (currentLang === 'ar')
+                    ? `★ ${name} − ${formatAEDw(disc)} (توفير ${formatAEDw(disc)})`
+                    : `★ ${name} −${formatAEDw(disc)} (you save ${formatAEDw(disc)})`;
+                ms.classList.remove('hidden');
+            } else {
+                po.classList.add('hidden');
+                ms.classList.add('hidden');
+            }
 
             const surchargeNote = document.getElementById('surchargeNote');
             if (currentSelection.hasPerformanceSurcharge) {
-                surchargeNote.textContent = currentLang === 'ar' ? 
+                surchargeNote.textContent = currentLang === 'ar' ?
                     'يشمل رسوم الأداء (+3,000 درهم)' : 'Includes +3,000 AED performance surcharge';
                 surchargeNote.classList.remove('hidden');
             } else {
@@ -916,9 +1213,15 @@
             if (!currentSelection.selectedPackage) return;
 
             const WHATSAPP_NUMBER = '971501187630';
+            const gross = currentSelection.grossPrice;
+            const disc = memberDiscount();
+            const net = Math.max(0, gross - disc);
             let message;
 
             if (currentLang === 'ar') {
+                const priceBlock = disc > 0
+                    ? `العضوية: ${MEMBER_NAME[activeMembership].ar}\nسعر الضمان: ${gross.toLocaleString()} درهم\nخصم العضوية: -${disc.toLocaleString()} درهم\nالإجمالي: ${net.toLocaleString()} درهم (غير شامل VAT)`
+                    : `السعر: ${net.toLocaleString()} درهم (غير شامل VAT)`;
                 message = `مرحباً 1885، أود الحصول على عرض ضمان.
 الماركة: ${currentSelection.make}
 الطراز: ${currentSelection.model}
@@ -927,10 +1230,13 @@
 المسافة: ${currentSelection.odometer.toLocaleString()} كم
 فئة الاستخدام: ${currentSelection.usageBand === 'NEW' ? 'جديد' : currentSelection.usageBand === 'MEDIUM' ? 'متوسط' : 'ثقيل'}
 الباقة المختارة: ${currentSelection.selectedPackage.termAr}
-السعر: ${currentSelection.finalPrice.toLocaleString()} درهم (غير شامل VAT)
+${priceBlock}
 
 ملاحظة: خاضع لفحص ما قبل الضمان. يجب إصلاح أي مشاكل قبل تفعيل الضمان.`;
             } else {
+                const priceBlock = disc > 0
+                    ? `Membership: ${MEMBER_NAME[activeMembership].en}\nWarranty price: AED ${gross.toLocaleString()}\nMember discount: -AED ${disc.toLocaleString()}\nTotal: AED ${net.toLocaleString()} (VAT not included)`
+                    : `Price: AED ${net.toLocaleString()} (VAT not included)`;
                 message = `Hello 1885, I'd like a warranty quote.
 Make: ${currentSelection.make}
 Model: ${currentSelection.model}
@@ -939,12 +1245,14 @@ Year: ${currentSelection.year}
 Odometer: ${currentSelection.odometer.toLocaleString()} km
 Usage band: ${currentSelection.usageBand}
 Selected package: ${currentSelection.selectedPackage.term}
-Price: AED ${currentSelection.finalPrice.toLocaleString()} (VAT not included)
+${priceBlock}
 
 Note: Subject to pre-warranty inspection. Any issues found must be repaired before warranty activation.`;
             }
 
-            window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`, '_blank');
+            const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
+            const win = window.open(url, '_blank');
+            if (!win) window.location.href = url;
         }
 
         // Initialize
